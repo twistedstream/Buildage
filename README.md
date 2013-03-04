@@ -10,7 +10,7 @@ NOTE: These instructions assume you have a root-level build directory in your pr
 * Add the Buildage project as a git submodule to your project in your `build` directory:
 
 ```    
-C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git build\Buildage
+C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git build/Buildage
 ``` 
 
 * Copy the `MyProject.nuspec.template.sample` file to your `build` directory and rename it to `{your project}.nuspec.template`:
