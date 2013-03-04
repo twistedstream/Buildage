@@ -1,42 +1,56 @@
 #Buildage
 The easy build and packager for C# projects.
 
-This collection of MSBuild scripts (bundled with [MSBuildTasks](http://nuget.org/packages/MSBuildTasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates a final NuGet package.
+This collection of MSBuild scripts (bundled with [MSBuildTasks](https://github.com/loresoft/msbuildtasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates a final NuGet package.
 
 ##Getting Started
 
-NOTE: These instructions assume you have a root-level build directory in your project called "build".
+NOTE: These instructions assume you have a root-level build directory in your project called `build`.
 
-1. Add the Buildage project as a git submodule to your project in your build directory:
-    
-    C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git build\Buildage
-    
-2. Copy the MyProject.nuspec.template.sample file to your build directory and rename it to {your project}.nuspec.template:
+* Add the Buildage project as a git submodule to your project in your `build` directory:
 
-    C:\YourProject> cp .\build\Buildage\MyProject.nuspec.template.sample .\{your project}.nuspec.template
+```    
+C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git build\Buildage
+``` 
 
-3. Modify the {your project}.nuspec.template file to match your project.
-4. Copy the Input.targets.sample file to your build directory and rename it to Input.targets:
+* Copy the `MyProject.nuspec.template.sample` file to your `build` directory and rename it to `{your project}.nuspec.template`:
 
-    C:\YourProject> cp .\build\Buildage\Input.targets.sample .\build\Input.targets
+```
+C:\YourProject> cp .\build\Buildage\MyProject.nuspec.template.sample .\{your project}.nuspec.template
+```
 
-5. Modify the Input.targets file to match your project.
-6. Copy the build.cmd.sample file to your project root directory and rename it to build.cmd:
+* Modify the `{your project}.nuspec.template` file to match your project.
+* Copy the `Input.targets.sample` file to your `build` directory and rename it to `Input.targets`:
 
-    C:\YourProject> cp .\build\Buildage\build.cmd.sample .\build.cmd
+```
+C:\YourProject> cp .\build\Buildage\Input.targets.sample .\build\Input.targets
+```
 
-7. Generate your initial set of AssemblyInfo.buildage.cs files:
+* Modify the `Input.targets` file to match your project.
+* Copy the `build.cmd.sample` file to your project root directory and rename it to `build.cmd`:
 
-    C:\YourProject> .\build.cmd GenAssemblyInfos
+```
+C:\YourProject> cp .\build\Buildage\build.cmd.sample .\build.cmd
+```
 
-8. Open your Visual Studio solution and add the generated AssemblyInfo.buildage.cs files for each project.  No need to add these files to source control as they can easily be regenerated.
-9. Remove the duplicate attributes from the standard AssemblyInfo.cs files in each project.
-10. Run your build:
+* Generate your initial set of `AssemblyInfo.buildage.cs` files:
 
-    C:\YourProject> .\build.cmd
+```
+C:\YourProject> .\build.cmd GenAssemblyInfos
+```
 
-11. Examine the build output files and the final resulting package in the build\out directory.
-12. Optionally add the following lines to your .gitignore file
+* Open your Visual Studio solution and add the generated `AssemblyInfo.buildage.cs` files for each project.  No need to add these files to source control as they can easily be regenerated.
+* Remove the duplicate attributes from the standard `AssemblyInfo.cs` files in each project.
+* Run your build:
 
-    AssemblyInfo.buildage.cs
-    /build/out
+```
+C:\YourProject> .\build.cmd
+```
+
+* Examine the build output files and the final resulting package in the `build\out` directory.
+* Optionally add the following lines to your `.gitignore` file
+
+```
+AssemblyInfo.buildage.cs
+/build/out
+```
