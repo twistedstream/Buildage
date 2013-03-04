@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <!-- dynamic: csproj file -->
+    <id>$id$</id>
+    <title>$title$</title>
+    <description>$description$</description>
+
+    <!-- dynamic: injected by build -->
+    <version></version>
+    <copyright></copyright>
+    
+    <!-- static -->
+    <authors>ex: GitHub username</authors>
+    <licenseUrl>http://myproject/license</licenseUrl>
+    <projectUrl>http://myproject</projectUrl>
+    <iconUrl>http://myproject/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>Tag1 Tag2</tags>
+    <releaseNotes>MyProject release notes.</releaseNotes>	
+  </metadata>
+</package>
