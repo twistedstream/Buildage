@@ -16,7 +16,7 @@ C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git 
 * Copy the `MyProject.nuspec.template.sample` file to your `build` directory and rename it to `{your project}.nuspec.template`:
 
 ```
-C:\YourProject> cp .\build\Buildage\MyProject.nuspec.template.sample .\{your project}.nuspec.template
+C:\YourProject> cp .\build\Buildage\MyProject.nuspec.template.sample .\build\{your project}.nuspec.template
 ```
 
 * Modify the `{your project}.nuspec.template` file to match your project.
