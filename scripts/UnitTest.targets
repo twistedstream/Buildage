@@ -1,11 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Run all unit tests --> 
-  <Target Name="RunUnitTest">
+  <!-- Run all tests --> 
+  <Target Name="RunUnitTests">
     <ItemGroup>
-        <UnitTest_TestAssemblies Include="$(Input_SourceDirPath)\**\bin\$(BuildConfiguration)\*.UnitTest.dll" />
+        <UnitTest_TestAssemblies Include="$(Input_SourceDirPath)\**\bin\$(BuildConfiguration)\$(Input_NUnitAssemblyNamePattern)" />
     </ItemGroup>
-    
+
+    <Message Text="NUnit test assemblies to run:" Importance="high" />
+    <Message Text="%(UnitTest_TestAssemblies.FullPath)"/>
+
     <NUnit ToolPath="$(Input_NUnitToolDirPath)" 
            DisableShadowCopy="true" 
            Assemblies="@(UnitTest_TestAssemblies)" 

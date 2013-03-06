@@ -38,6 +38,6 @@
   
   <!-- Perform build! -->
   <Target Name="Build">
-    <CallTarget Targets="ValidateInput; InitOutput; GenAssemblyInfo; Compile; RunUnitTest; CreatePackages" />
+    <CallTarget Targets="ValidateInput; InitOutput; GenAssemblyInfo; Compile; RunUnitTests; CreatePackages" />
   </Target>
 </Project>
