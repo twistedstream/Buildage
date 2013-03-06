@@ -1,32 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!-- Create the NuGet package -->
-  <Target Name="CreatePackage">
-    <!-- Create generated nuspec file from template -->
-    <PropertyGroup>
-        <Package_GeneratedSpecFilePath>$(Input_PackageProjectDirPath)\$(Input_PackageProjectName).nuspec</Package_GeneratedSpecFilePath>
-    </PropertyGroup>
-    <Copy SourceFiles="$(Input_PackageTemplateSpecFilePath)" 
-          DestinationFiles="$(Package_GeneratedSpecFilePath)" />
-
-    <!-- Inject version -->
-    <XmlUpdate XmlFileName="$(Package_GeneratedSpecFilePath)"
+  <!-- Create the NuGet packages -->
+  <Target Name="CreatePackages">
+    <ItemGroup>
+        <Package_SourceTemplateSpecFiles Include="$(Input_SourceDirPath)\**\*.nuspec.template" />
+        <Package_DestinationGeneratedSpecFiles Include="@(Package_SourceTemplateSpecFiles -> '%(RelativeDir)\%(Filename)')" />
+        <Package_ProjectFiles Include="@(Package_DestinationGeneratedSpecFiles -> '%(RelativeDir)\%(Filename).csproj')" />
+    </ItemGroup>
+    <Message Text="Source template nuspec files:" Importance="high" />
+    <Message Text="%(Package_SourceTemplateSpecFiles.FullPath)"/>
+    <Message Text="Destintation generated nuspec files:" Importance="high" />
+    <Message Text="%(Package_DestinationGeneratedSpecFiles.FullPath)"/>
+    <Message Text="Project files:" Importance="high" />
+    <Message Text="%(Package_ProjectFiles.FullPath)"/>
+    
+    <!-- Create generated nuspec files from template -->
+    <Copy SourceFiles="@(Package_SourceTemplateSpecFiles)" 
+          DestinationFiles="@(Package_DestinationGeneratedSpecFiles)" />
+          
+    <Message Text="Injecting additional metadata into nuspec files:" Importance="high" />
+    <!-- Inject version into each nuspec file -->
+    <XmlUpdate XmlFileName="%(Package_DestinationGeneratedSpecFiles.FullPath)"
                XPath="/package/metadata/version"
                Value="$(Version_AssemblyVersion)" />
-
-    <!-- Inject copywrite -->
-    <XmlUpdate XmlFileName="$(Package_GeneratedSpecFilePath)"
+    
+    <!-- Inject copywrite into each nuspec file -->
+    <XmlUpdate XmlFileName="%(Package_DestinationGeneratedSpecFiles.FullPath)"
                XPath="/package/metadata/copyright"
                Value="$(Version_AssemblyCopyright)" />
-    
+               
     <!-- Build nuget package -->
-    <PropertyGroup>
-        <Package_ProjectFileName>$(Input_PackageProjectName).csproj</Package_ProjectFileName>
-    </PropertyGroup>
-    <Exec Command="&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack &quot;$(Package_ProjectFileName)&quot; -OutputDirectory &quot;$(Build_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed"
-          WorkingDirectory="$(Input_PackageProjectDirPath)" />
-          
+    <Exec Command="&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack &quot;%(Package_ProjectFiles.FullPath)&quot; -OutputDirectory &quot;$(Build_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed"
+          WorkingDirectory="%(Package_ProjectFiles.RelativeDir)" />
+    
     <!-- Delete generated nuspec file -->
-    <Delete Files="$(Package_GeneratedSpecFilePath)" />
+    <Delete Files="@(Package_DestinationGeneratedSpecFiles)" />
   </Target>
 </Project>

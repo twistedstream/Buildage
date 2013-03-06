@@ -1,56 +1,70 @@
 #Buildage
 The easy build and packager for C# projects.
 
-This collection of MSBuild scripts (bundled with [MSBuildTasks](https://github.com/loresoft/msbuildtasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates a final NuGet package.
+This collection of MSBuild scripts (bundled with [MSBuildTasks](https://github.com/loresoft/msbuildtasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates NuGet packages.
+
+Buildage performs the following build steps:
+* Generates a common AssemblyInfo for your solution from a core set of metadata
+* Compiles your solution
+* Runs unit tests written in [NUnit](http://nunit.org)
+* Creates [NuGet](http://nuget.org) packages
 
 ##Getting Started
 
-NOTE: These instructions assume you have a root-level build directory in your project called `build`.
+**NOTE:** These instructions assume you have a root-level build directory in your project called `build`.
 
-* Add the Buildage project as a git submodule to your project in your `build` directory:
+* Add the **Buildage** project repo as a git submodule to your repo in your `build` directory:
 
 ```    
-C:\YourProject> git submodule add https://github.com/twistedstream/Buildage.git build/Buildage
+C:\YourRepo> git submodule add https://github.com/twistedstream/Buildage.git build/Buildage
 ``` 
 
-* Copy the `MyProject.nuspec.template.sample` file to your `build` directory and rename it to `{your project}.nuspec.template`:
+* Copy the `Input.targets` file from `samples` to your `build` directory:
 
 ```
-C:\YourProject> cp .\build\Buildage\MyProject.nuspec.template.sample .\build\{your project}.nuspec.template
+C:\YourRepo> cp .\build\Buildage\samples\Input.targets .\build
 ```
 
-* Modify the `{your project}.nuspec.template` file to match your project.
-* Copy the `Input.targets.sample` file to your `build` directory and rename it to `Input.targets`:
+* Customize the `Input.targets` file to match your solution.
+* For each project in your solution that you wish to generate a NuGet package for:
+  * Copy the `MyProject.nuspec.template` file from `samples` to your project's directory and rename it to match your project.
 
 ```
-C:\YourProject> cp .\build\Buildage\Input.targets.sample .\build\Input.targets
+C:\YourRepo> cp .\build\Buildage\samples\MyProject.nuspec.template .\src\MyActualProject\MyActualProject.nuspec.template
 ```
 
-* Modify the `Input.targets` file to match your project.
-* Copy the `build.cmd.sample` file to your project root directory and rename it to `build.cmd`:
+  * Customize the `.nuspec.template` file to match your project.
+* Copy the `build.cmd` file from `samples` to your root directory:
 
 ```
-C:\YourProject> cp .\build\Buildage\build.cmd.sample .\build.cmd
+C:\YourRepo> cp .\build\Buildage\samples\build.cmd .\build.cmd
 ```
 
-* Generate your initial set of `AssemblyInfo.buildage.cs` files:
+* Generate your initial `CommonAssemblyInfo.cs` file:
 
 ```
-C:\YourProject> .\build.cmd GenAssemblyInfos
+C:\YourRepo> .\build.cmd GenAssemblyInfo
 ```
 
-* Open your Visual Studio solution and add the generated `AssemblyInfo.buildage.cs` files for each project.  No need to add these files to source control as they can easily be regenerated.
-* Remove the duplicate attributes from the standard `AssemblyInfo.cs` files in each project.
+* Open your Visual Studio solution and add the generated `CommonAssemblyInfo.cs` file as a linked file to each project.  No need to add it to source control as it can easily be regenerated.
+* Remove the duplicate attributes from the standard `AssemblyInfo.cs` files in each project.  For the most part, only following should be necessary:
+
+```cs
+[assembly: AssemblyTitle("YourAssmbly")]
+[assembly: AssemblyDescription("YourAssembly description.")]
+[assembly: Guid("your-assembly-guid")]
+```
+
 * Run your build:
 
 ```
-C:\YourProject> .\build.cmd
+C:\YourRepo> .\build.cmd
 ```
 
-* Examine the build output files and the final resulting package in the `build\out` directory.
+* Examine the build output files and the final resulting package(s) in the `build\out` directory.
 * Optionally add the following lines to your `.gitignore` file
 
 ```
-AssemblyInfo.buildage.cs
+CommonAssemblyInfo.cs
 /build/out
 ```

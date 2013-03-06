@@ -29,9 +29,6 @@
     <Error Condition="'$(Input_SourceDirPath)' == ''" Text="Property 'Input_SourceDirPath' cannot be empty." />
     <Error Condition="'$(Input_NUnitToolDirPath)' == ''" Text="Property 'Input_NUnitToolDirPath' cannot be empty." />
     <Error Condition="'$(Input_NuGetToolDirPath)' == ''" Text="Property 'Input_NuGetToolDirPath' cannot be empty." />
-    <Error Condition="'$(Input_PackageProjectDirPath)' == ''" Text="Property 'Input_PackageProjectDirPath' cannot be empty." />
-    <Error Condition="'$(Input_PackageProjectName)' == ''" Text="Property 'Input_PackageProjectName' cannot be empty." />
-    <Error Condition="'$(Input_PackageTemplateSpecFilePath)' == ''" Text="Property 'Input_PackageTemplateSpecFilePath' cannot be empty." />
   </Target>
 
   <!-- Refresh the build output directory -->
@@ -42,6 +39,6 @@
   
   <!-- Perform build! -->
   <Target Name="Build">
-    <CallTarget Targets="ValidateInput; InitOutput; GenAssemblyInfo; Compile; RunUnitTest; CreatePackage" />
+    <CallTarget Targets="ValidateInput; InitOutput; GenAssemblyInfo; Compile; RunUnitTest; CreatePackages" />
   </Target>
 </Project>
