@@ -7,7 +7,7 @@
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets"/>
 
   <!-- Import functional build files -->
-  <Import Project="$(MSBuildProjectDirectory)\..\Input.targets" />
+  <Import Project="$(MSBuildProjectDirectory)\..\..\Input.targets" />
   <Import Project="$(MSBuildProjectDirectory)\Version.targets" />
   <Import Project="$(MSBuildProjectDirectory)\Compile.targets" />
   <Import Project="$(MSBuildProjectDirectory)\UnitTest.targets" />
