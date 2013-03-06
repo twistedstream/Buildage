@@ -30,7 +30,7 @@
                Value="$(Version_AssemblyCopyright)" />
                
     <!-- Build nuget package -->
-    <Exec Command="&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack &quot;%(Package_ProjectFiles.FullPath)&quot; -OutputDirectory &quot;$(Build_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed"
+    <Exec Command="&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack &quot;%(Package_ProjectFiles.FullPath)&quot; -OutputDirectory &quot;$(Input_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed"
           WorkingDirectory="%(Package_ProjectFiles.RelativeDir)" />
     
     <!-- Delete generated nuspec file -->

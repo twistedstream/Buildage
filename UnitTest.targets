@@ -9,6 +9,6 @@
     <NUnit ToolPath="$(Input_NUnitToolDirPath)" 
            DisableShadowCopy="true" 
            Assemblies="@(UnitTest_TestAssemblies)" 
-           OutputXmlFile="$(Build_OutputDirPath)\TestResult.xml" />
+           OutputXmlFile="$(Input_OutputDirPath)\TestResult.xml" />
   </Target>
 </Project>

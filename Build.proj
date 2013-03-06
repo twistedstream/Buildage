@@ -6,18 +6,17 @@
   </PropertyGroup>
   <Import Project="$(MSBuildCommunityTasksPath)\MSBuild.Community.Tasks.targets"/>
 
-  <!-- Core build properties --> 
-  <PropertyGroup>
-    <BuildConfiguration Condition=" '$(BuildConfiguration)' == '' ">Release</BuildConfiguration>
-    <Build_OutputDirPath>$(MSBuildProjectDirectory)\..\out</Build_OutputDirPath>
-  </PropertyGroup>
-
   <!-- Import functional build files -->
   <Import Project="$(MSBuildProjectDirectory)\..\Input.targets" />
   <Import Project="$(MSBuildProjectDirectory)\Version.targets" />
   <Import Project="$(MSBuildProjectDirectory)\Compile.targets" />
   <Import Project="$(MSBuildProjectDirectory)\UnitTest.targets" />
   <Import Project="$(MSBuildProjectDirectory)\Package.targets" />
+
+  <!-- Build configuration --> 
+  <PropertyGroup>
+    <BuildConfiguration Condition=" '$(BuildConfiguration)' == '' ">Release</BuildConfiguration>
+  </PropertyGroup>
 
   <!-- Makes sure required properties are defined in the Input.targets file --> 
   <Target Name="ValidateInput">
@@ -33,8 +32,8 @@
 
   <!-- Refresh the build output directory -->
   <Target Name="InitOutput">
-    <DeleteTree Directories="$(Build_OutputDirPath)" Recursive="True" />
-    <MakeDir Directories="$(Build_OutputDirPath)" />
+    <DeleteTree Directories="$(Input_OutputDirPath)" Recursive="True" />
+    <MakeDir Directories="$(Input_OutputDirPath)" />
   </Target>
   
   <!-- Perform build! -->
