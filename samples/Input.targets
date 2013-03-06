@@ -2,7 +2,7 @@
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <!-- Product information -->
   <PropertyGroup>
-    <Input_Product>Your Producy Name</Input_Product>
+    <Input_Product>Your Product Name</Input_Product>
     <Input_Company>Your Company</Input_Company>
     <Input_VersionMajor>1</Input_VersionMajor>
     <Input_VersionMinor>0</Input_VersionMinor>
@@ -25,20 +25,4 @@
     <!-- Path to the file to be used as the template for generating a final nuspec file -->
     <Input_PackageTemplateSpecFilePath>$(MSBuildProjectDirectory)\..\MyProject.nuspec.template</Input_PackageTemplateSpecFilePath>
   </PropertyGroup>
-  
-  <!-- Assembly information -->
-  <ItemGroup>
-    <!-- Input_ProjectDirs = directory of each project to generate an AssemblyInfo for -->
-    <!-- Input_ProjectDirs.AssemblyTitle = title of the assembly -->
-    <!-- Input_ProjectDirs.AssemblyDescription = description of the assembly -->
-    <Input_ProjectDirs Include="$(Input_SourceDirPath)\MyProject">
-        <AssemblyTitle>$(Input_Product)</AssemblyTitle>
-        <AssemblyDescription>MyProject description</AssemblyDescription>
-    </Input_ProjectDirs>
-    <!-- If you don't have a unit test project, just remove the following -->
-    <Input_ProjectDirs Include="$(Input_SourceDirPath)\MyProject.UnitTest">
-        <AssemblyTitle>$(Input_Product) Unit Tests</AssemblyTitle>
-        <AssemblyDescription>Unit tests for the types in $(Input_Product)</AssemblyDescription>
-    </Input_ProjectDirs>
-  </ItemGroup>  
 </Project>

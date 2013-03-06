@@ -15,8 +15,8 @@
     </Otherwise>
   </Choose>
 
-  <!-- Generate AssemblyInfo files for projects -->
-  <Target Name="GenAssemblyInfos">
+  <!-- Generate common AssemblyInfo file -->
+  <Target Name="GenAssemblyInfo">
     <Time>
       <Output TaskParameter="Year" PropertyName="Version_Year" />
     </Time>
@@ -29,34 +29,28 @@
       <Version_AssemblyInformationalVersion>$(Version_AssemblyVersion)$(Version_VersionInformationPadded)</Version_AssemblyInformationalVersion>
       <Version_CompanyPadded> $(Input_Company)</Version_CompanyPadded>
       <Version_AssemblyCopyright>Copyright © $(Version_Year)$(Version_CompanyPadded) - All rights reserved.</Version_AssemblyCopyright>
-      <Version_GeneratedAssemblyInfoFileName>AssemblyInfo.buildage.cs</Version_GeneratedAssemblyInfoFileName>
     </PropertyGroup>
 
-    <Message Text="Common information that will be written to all $(Version_GeneratedAssemblyInfoFileName) files:" Importance="high" />
+    <Message Text="Common AssemblyInfo information:" Importance="high" />
+    <Message Text="- Product:                $(Input_Product)"/>
+    <Message Text="- Company:                $(Input_Company)"/>
+    <Message Text="- Copyright:              $(Version_AssemblyCopyright)"/>
     <Message Text="- Assembly Version:       $(Version_AssemblyVersion)"/>
     <Message Text="- File Version:           $(Version_AssemblyFileVersion)"/>
     <Message Text="- Informational Version:  $(Version_AssemblyInformationalVersion)"/>
-    <Message Text="- Copyright:              $(Version_AssemblyCopyright)"/>
     
-    <!-- Build itemgroup with full path to generated AssemblyInfo files -->
-    <ItemGroup>
-        <Version_AssemblyInfoFiles Include="@(Input_ProjectDirs -> '%(FullPath)\$(Version_GeneratedAssemblyInfoFileName)')">
-            <Title>%(AssemblyTitle)</Title>
-            <Description>%(AssemblyDescription)</Description>
-        </Version_AssemblyInfoFiles>
-    </ItemGroup>
-    
-    <!-- Build each AssemblyInfo file in item group -->
-    <Attrib Files="@(Version_AssemblyInfoFiles)" ReadOnly="False" />
+    <PropertyGroup>
+        <Version_CommonAssemblyInfoFilePath>$(Input_SourceDirPath)\CommonAssemblyInfo.cs</Version_CommonAssemblyInfoFilePath>
+    </PropertyGroup>
+    <Message Text="Generating CommonAssemblyInfo file:" Importance="high" />
+    <Attrib Files="@(Version_CommonAssemblyInfoFilePath)" ReadOnly="False" />
     <AssemblyInfo CodeLanguage="CS"
-                  OutputFile="@(Version_AssemblyInfoFiles)"
-                  AssemblyTitle="%(Title)"
-                  AssemblyDescription="%(Description)"
-                  AssemblyCompany="$(Input_Company)"
+                  OutputFile="$(Version_CommonAssemblyInfoFilePath)"
                   AssemblyProduct="$(Input_Product)"
+                  AssemblyCompany="$(Input_Company)"
                   AssemblyCopyright="$(Version_AssemblyCopyright)"
-                  AssemblyInformationalVersion="$(Version_AssemblyInformationalVersion)"
                   AssemblyVersion="$(Version_AssemblyVersion)"
-                  AssemblyFileVersion="$(Version_AssemblyFileVersion)" />
+                  AssemblyFileVersion="$(Version_AssemblyFileVersion)"
+                  AssemblyInformationalVersion="$(Version_AssemblyInformationalVersion)" />
   </Target>
 </Project>
