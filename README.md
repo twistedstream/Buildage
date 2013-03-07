@@ -68,3 +68,6 @@ C:\YourRepo> .\build.cmd
 ```
 
 The resulting output files (ex: NuGet packages) will be in the `build\out` directory.
+
+##Questions?
+[@twistedstream](http://twitter.com/twistedstream)
