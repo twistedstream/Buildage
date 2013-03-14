@@ -5,35 +5,52 @@
     <ItemGroup>
         <Package_SourceTemplateSpecFiles Include="$(Input_SourceDirPath)\**\*.nuspec.template" />
         <Package_DestinationGeneratedSpecFiles Include="@(Package_SourceTemplateSpecFiles -> '%(RelativeDir)\%(Filename)')" />
-        <Package_ProjectFiles Include="@(Package_DestinationGeneratedSpecFiles -> '%(RelativeDir)\%(Filename).csproj')" />
+        <Package_PackageInputFiles Include="@(Package_DestinationGeneratedSpecFiles)">
+            <ProjectFilePath>%(RelativeDir)%(Filename).csproj</ProjectFilePath>
+        </Package_PackageInputFiles>
     </ItemGroup>
     <Message Text="Source template nuspec files:" Importance="high" />
     <Message Text="%(Package_SourceTemplateSpecFiles.FullPath)"/>
     <Message Text="Destintation generated nuspec files:" Importance="high" />
-    <Message Text="%(Package_DestinationGeneratedSpecFiles.FullPath)"/>
+    <Message Text="%(Package_PackageInputFiles.FullPath)"/>
     <Message Text="Project files:" Importance="high" />
-    <Message Text="%(Package_ProjectFiles.FullPath)"/>
+    <Message Text="%(Package_PackageInputFiles.ProjectFilePath)"/>
     
     <!-- Create generated nuspec files from template -->
     <Copy SourceFiles="@(Package_SourceTemplateSpecFiles)" 
-          DestinationFiles="@(Package_DestinationGeneratedSpecFiles)" />
+          DestinationFiles="@(Package_PackageInputFiles)" />
           
     <Message Text="Injecting additional metadata into nuspec files:" Importance="high" />
     <!-- Inject version into each nuspec file -->
-    <XmlUpdate XmlFileName="%(Package_DestinationGeneratedSpecFiles.FullPath)"
+    <XmlUpdate XmlFileName="%(Package_PackageInputFiles.FullPath)"
                XPath="/package/metadata/version"
                Value="$(Version_AssemblyVersion)" />
     
     <!-- Inject copywrite into each nuspec file -->
-    <XmlUpdate XmlFileName="%(Package_DestinationGeneratedSpecFiles.FullPath)"
+    <XmlUpdate XmlFileName="%(Package_PackageInputFiles.FullPath)"
                XPath="/package/metadata/copyright"
                Value="$(Version_AssemblyCopyright)" />
                
     <!-- Build nuget package -->
-    <Exec Command="&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack &quot;%(Package_ProjectFiles.FullPath)&quot; -OutputDirectory &quot;$(Input_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed"
-          WorkingDirectory="%(Package_ProjectFiles.RelativeDir)" />
+    <MSBuild Projects="$(MSBuildProjectFile)" 
+             Targets="BuildNuGet"
+             Properties="Package_BuildNuGet_ProjectFilePath=%(Package_PackageInputFiles.ProjectFilePath); 
+                         Package_BuildNuGet_SpecFilePath=%(Package_PackageInputFiles.FullPath); 
+                         Package_BuildNuGet_WorkingDirPath=%(Package_PackageInputFiles.RelativeDir)" />
     
     <!-- Delete generated nuspec file -->
-    <Delete Files="@(Package_DestinationGeneratedSpecFiles)" />
+    <Delete Files="@(Package_PackageInputFiles)" />
+  </Target>
+  
+  <Target Name="BuildNuGet">
+    <PropertyGroup>
+        <Package_BuildNuGet_CommandBase>&quot;$(Input_NuGetToolDirPath)\NuGet.exe&quot; pack</Package_BuildNuGet_CommandBase>
+        <!-- Run NuGet pack with .csproj if it exists, otherwise directly against .nuspec -->
+        <Package_BuildNuGet_CommandWithInput Condition="Exists($(Package_BuildNuGet_ProjectFilePath))">$(Package_BuildNuGet_CommandBase) &quot;$(Package_BuildNuGet_ProjectFilePath)&quot;</Package_BuildNuGet_CommandWithInput>
+        <Package_BuildNuGet_CommandWithInput Condition="!Exists($(Package_BuildNuGet_ProjectFilePath))">$(Package_BuildNuGet_CommandBase) &quot;$(Package_BuildNuGet_SpecFilePath)&quot;</Package_BuildNuGet_CommandWithInput>
+        <Package_BuildNuGet_Command>$(Package_BuildNuGet_CommandWithInput) -OutputDirectory &quot;$(Input_OutputDirPath)&quot; -Properties Configuration=$(BuildConfiguration) -Verbosity detailed</Package_BuildNuGet_Command>
+    </PropertyGroup>
+    
+    <Exec Command="$(Package_BuildNuGet_Command)" WorkingDirectory="$(Package_BuildNuGet_WorkingDirPath)" />
   </Target>
 </Project>
