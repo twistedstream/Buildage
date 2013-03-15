@@ -1,12 +1,17 @@
+<!-- 
+Template .nuspec file used by the Package.targets Buildage script 
+to generate a final .nuspec file to be used by 'NuGet.exe pack'.
+-->
 <?xml version="1.0"?>
 <package>
   <metadata>
     <!-- dynamic: csproj file -->
+    <!-- change tokens to actual values if not using with a .csproj -->
     <id>$id$</id>
     <title>$title$</title>
     <description>$description$</description>
 
-    <!-- dynamic: injected by build -->
+    <!-- dynamic: injected by Buildage -->
     <version></version>
     <copyright></copyright>
     
