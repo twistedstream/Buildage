@@ -12,7 +12,7 @@
   
   <!-- Build / package configuration -->
   <PropertyGroup>
-    <!-- Root directory of the source code (typically a 'src' directory) -->
+    <!-- Root directory of the source code (typically a root '/src' directory) -->
     <Input_SourceDirPath>$(MSBuildProjectDirectory)\..\..\..\src</Input_SourceDirPath>
     <!-- Directory containing the NUnit executable -->
     <Input_NUnitToolDirPath>$(Input_SourceDirPath)\packages\NUnit.2.5.10.11092\tools</Input_NUnitToolDirPath>
