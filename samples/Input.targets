@@ -6,8 +6,8 @@
     <Input_Company>Your Company</Input_Company>
     <Input_VersionMajor>1</Input_VersionMajor>
     <Input_VersionMinor>0</Input_VersionMinor>
-    <Input_VersionRevision>0</Input_VersionRevision>
-    <Input_VersionInformation>Example: Release Candidate</Input_VersionInformation>
+    <Input_VersionPatch>0</Input_VersionPatch>
+    <Input_VersionPreRelease>beta1</Input_VersionPreRelease>
   </PropertyGroup>
   
   <!-- Build / package configuration -->

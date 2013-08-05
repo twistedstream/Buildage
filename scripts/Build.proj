@@ -24,7 +24,7 @@
     <Error Condition="'$(Input_Product)' == ''" Text="Property 'Input_Product' cannot be empty." />
     <Error Condition="'$(Input_VersionMajor)' == ''" Text="Property 'Input_VersionMajor' cannot be empty." />
     <Error Condition="'$(Input_VersionMinor)' == ''" Text="Property 'Input_VersionMinor' cannot be empty." />
-    <Error Condition="'$(Input_VersionRevision)' == ''" Text="Property 'Input_VersionRevision' cannot be empty." />
+    <Error Condition="'$(Input_VersionPatch)' == ''" Text="Property 'Input_VersionPatch' cannot be empty." />
     <Error Condition="'$(Input_SourceDirPath)' == ''" Text="Property 'Input_SourceDirPath' cannot be empty." />
     <Error Condition="'$(Input_NUnitToolDirPath)' == ''" Text="Property 'Input_NUnitToolDirPath' cannot be empty." />
     <Error Condition="'$(Input_NuGetToolDirPath)' == ''" Text="Property 'Input_NuGetToolDirPath' cannot be empty." />

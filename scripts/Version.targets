@@ -21,12 +21,55 @@
       <Output TaskParameter="Year" PropertyName="Version_Year" />
     </Time>
 
-    <!-- Construct version information -->
+    <!-- Attempt to get version info from the Input.targets file -->
+    <Message Condition=" '$(Input_VersionMajor)' != '' " 
+             Text="Version info is sourced from the Input.targets file:" Importance="high" />
+    <Message Condition=" '$(Input_VersionMajor)' != '' " 
+             Text="- Major:        $(Input_VersionMajor)" />
+    <Message Condition=" '$(Input_VersionMajor)' != '' " 
+             Text="- Minor:        $(Input_VersionMinor)" />
+    <Message Condition=" '$(Input_VersionMajor)' != '' " 
+             Text="- Patch:        $(Input_VersionPatch)" />
+    <Message Condition=" '$(Input_VersionMajor)' != '' " 
+             Text="- Pre-release:  $(Input_VersionPreRelease)" />
+    <PropertyGroup Condition=" '$(Input_VersionMajor)' != '' ">
+      <Version_AssemblyVersion>$(Input_VersionMajor).$(Input_VersionMinor).$(Input_VersionPatch)</Version_AssemblyVersion>
+      <Version_VersionInformationFormatted Condition=" '$(Input_VersionPreRelease)' != '' ">-$(Input_VersionPreRelease)</Version_VersionInformationFormatted>
+    </PropertyGroup>
+
+    <!-- Attempt to get version info from latest Git tag -->
+    <Exec Condition=" '$(Input_VersionMajor)' == '' " 
+          Command="git describe --abbrev=0 --tags" 
+          WorkingDirectory="..\.."
+          ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="Version_GitTag" />
+    </Exec>
+    <PropertyGroup Condition=" '$(Version_GitTag)' != '' ">
+      <Version_MajorMinorPatch>$([System.Text.RegularExpressions.Regex]::Match('$(Version_GitTag)', '^v(?&lt;MajorMinorMin&gt;\d+\.\d+\.\d+).*$').Groups.get_Item("MajorMinorMin"))</Version_MajorMinorPatch>
+      <Version_PreRelease>$([System.Text.RegularExpressions.Regex]::Match('$(Version_GitTag)', '^v\d+\.\d+\.\d+-(?&lt;PreRelease&gt;[0-9A-Za-z-]+).*$').Groups.get_Item("PreRelease"))</Version_PreRelease>
+    </PropertyGroup>
+    <Message Condition=" '$(Version_MajorMinorPatch)' != '' " 
+             Text="Version info is sourced from the latest Git tag:" Importance="high" />
+    <Message Condition=" '$(Version_MajorMinorPatch)' != '' " 
+             Text="- Git tag:            $(Version_GitTag)" />
+    <Message Condition=" '$(Version_MajorMinorPatch)' != '' " 
+             Text="- Major/Minor/Patch:  $(Version_MajorMinorPatch)" />
+    <Message Condition=" '$(Version_MajorMinorPatch)' != '' " 
+             Text="- Pre-release:         $(Version_PreRelease)" />
+    <PropertyGroup Condition=" '$(Version_MajorMinorPatch)' != '' ">
+      <Version_AssemblyVersion>$(Version_MajorMinorPatch)</Version_AssemblyVersion>
+      <Version_VersionInformationFormatted Condition=" '$(Version_PreRelease)' != '' ">-$(Version_PreRelease)</Version_VersionInformationFormatted>
+    </PropertyGroup>
+
+    <!-- Bail if version info can't be found in either -->
+    <Error Condition=" '$(Version_MajorMinorPatch)' == '' And '$(Input_VersionMajor)' == '' " 
+           Text="Version information could not be determined.  It must either come from a SemVer-formatted git tag or the Input.targets file." />
+
+    <!-- Build remaining version / assembly info -->
     <PropertyGroup>
-      <Version_AssemblyVersion>$(Input_VersionMajor).$(Input_VersionMinor).$(Input_VersionRevision)</Version_AssemblyVersion>
       <Version_AssemblyFileVersion>$(Version_AssemblyVersion).$(Version_Build)</Version_AssemblyFileVersion>
-      <Version_VersionInformationPadded Condition=" '$(Input_VersionInformation)' != '' "> $(Input_VersionInformation)</Version_VersionInformationPadded>
-      <Version_AssemblyInformationalVersion>$(Version_AssemblyVersion)$(Version_VersionInformationPadded)</Version_AssemblyInformationalVersion>
+      <Version_BuildFormatted Condition=" '$(Version_Build)' != '0' ">+$(Version_Build)</Version_BuildFormatted>
+      <Version_AssemblyInformationalVersion>$(Version_AssemblyVersion)$(Version_VersionInformationFormatted)$(Version_BuildFormatted)</Version_AssemblyInformationalVersion>
       <Version_CompanyPadded> $(Input_Company)</Version_CompanyPadded>
       <Version_AssemblyCopyright>Copyright © $(Version_Year)$(Version_CompanyPadded) - All rights reserved.</Version_AssemblyCopyright>
     </PropertyGroup>
