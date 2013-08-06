@@ -1,5 +1,5 @@
 # Buildage #
-The easy build and packager for C# projects.
+The easy build and packager for C# projects - now supporting [SemVer](http://semver.org/) version Git tags!
 
 This collection of MSBuild scripts (bundled with [MSBuildTasks](https://github.com/loresoft/msbuildtasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates NuGet packages.
 
@@ -26,6 +26,9 @@ C:\YourRepo> cp .\build\Buildage\samples\Input.targets .\build
 C:\YourRepo> notepad .\build\Input.targets
 ```
 
+* Decide how you want to drive versioning.  Buildage now supports two methods:
+  * Provide version information in your `Input.targets` file, which is the traditional approach.  The drawback is that a version change (which is really project metadata) results in a source control commit. 
+  * Use Git tags that follow the [SemVer](http://semver.org/) spec to express the current version.
 * You can generate NuGet packages in one of two ways, and both require a special file with a `.nuspec.template` extension.  This file is what Buildage uses to generate a final `.nuspec` file at build time to be used with the `nuget pack` command.  Buildage will automatically find any `.nuspec.template` file anywhere in your source directory path (specified via the `Input_SourceDirPath` property in the `Input.targets` file) and generate a package in your build output directy path (specified by `Input_OutputDirPath`).
   * The first method Buildage uses to generate NuGet packages is to use both a Visual Studio project and a `.nuspec` file as the source for the `nuget pack` command.  Much of the package metadata is sourced from the project, but the big advantage is the automatic detection of binaries and NuGet dependencies.  The `.nuspec` file can then provide additional NuGet-specific metadata.  For more information on using Visual Studio project files and `.nuspec` files together as a package source, see the [NuGet documentation](http://docs.nuget.org/docs/creating-packages/creating-and-publishing-a-package).
   * The second method is to only use the `.nuspec` file, which is useful in more complex scenarios or when there's no relevant Visual Studio project to source from.
