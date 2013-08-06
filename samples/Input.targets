@@ -4,6 +4,7 @@
   <PropertyGroup>
     <Input_Product>Your Product Name</Input_Product>
     <Input_Company>Your Company</Input_Company>
+    <!-- Version inputs not necessary if using version Git tags (see README.md) -->
     <Input_VersionMajor>1</Input_VersionMajor>
     <Input_VersionMinor>0</Input_VersionMinor>
     <Input_VersionPatch>0</Input_VersionPatch>

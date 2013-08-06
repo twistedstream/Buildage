@@ -1,4 +1,4 @@
-#Buildage
+# Buildage #
 The easy build and packager for C# projects.
 
 This collection of MSBuild scripts (bundled with [MSBuildTasks](https://github.com/loresoft/msbuildtasks)) will make it easy to have a command-line build script up and running in no time that builds your source code, runs unit tests, and generates NuGet packages.
@@ -9,7 +9,7 @@ Buildage performs the following build steps:
 * Runs test assemblies written in [NUnit](http://nunit.org)
 * Creates [NuGet](http://nuget.org) packages
 
-##Getting Started
+## Getting Started ##
 
 **NOTE:** These instructions assume your project code is in a [Git](http://git-scm.com/) repository and you have a root-level directory in your repo called `build` that can contain your build scripts.
 
@@ -83,5 +83,5 @@ C:\YourRepo> .\build.cmd
 
 The resulting output files (ex: NuGet packages) will be in the `build\out` directory.
 
-##Questions?
+## Questions? ##
 [@twistedstream](http://twitter.com/twistedstream)
